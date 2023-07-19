@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #dedede;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    #timer {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+    .Button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    h1 {
+  animation-name: colorTransition;
+  animation-duration: 3s; /* Change the duration as needed */
+  animation-iteration-count: infinite; /* Change or remove this property if needed */
+}
+
+
+  @keyframes colorTransition {
+  0% {
+    color: black;
+    text-shadow: -20px -15px 20px red; /* Add a red text shadow */
+  }
+  25% {
+    color: black;
+    text-shadow: 0 0 10px rgb(218, 104, 22); /* Add a red text shadow */
+  }
+  50% {
+    color: black;
+    text-shadow: 11px 20px 20px rgb(128, 117, 0); /* Add a green text shadow */
+  }
+  75% {
+    color: black;
+    text-shadow: 0 0 10px green; /* Add a green text shadow */
+  }
+  100% {
+    color: black;
+    text-shadow: 11px -20px 20px rgb(26, 255, 0); /* Back to red color and shadow */
+  }
+}
+  </style>
+</head>
+<body>
+  
+    <h1>Abacus Worldwide Competition</h1>
+    <div class="Button">
+      <button onclick="startTimer()">Start</button>
+    </div>
+    <p id="timer">Time: 5 Minutes</p>
+  
+    <script>
+        
+        function getRandomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateTable(tableIndex, expectedAnswers) {
+      const table = document.createElement('table');
+      const thead = document.createElement('thead');
+      const tbody = document.createElement('tbody');
+      const columns = 11;
+      const rows = 5;
+
+      thead.innerHTML = `
+        <tr>
+          <th>No.</th>
+          ${Array.from({ length: columns - 1 }, (_, index) => `<th>Column ${index + 1}</th>`).join('')}
+        </tr>
+      `;
+
+      const columnSums = new Array(columns).fill(0);
+
+      for (let i = 0; i < rows; i++) {
+        const row = document.createElement('tr');
+
+        for (let j = 0; j < columns; j++) {
+          let cellValue;
+          if (i === rows - 1 && j === 0) {
+            cellValue = 'Answer';
+          } else if (i === rows - 1) {
+            cellValue = createInputCell(j - 1);
+          } else if (j === 0) {
+            cellValue = i + 1;
+            columnSums[j] += cellValue;
+          } else {
+            cellValue = getRandomNumber(1, 100);
+            columnSums[j] += cellValue;
+          }
+
+          const cell = document.createElement('td');
+          cell.innerHTML = cellValue;
+          row.appendChild(cell);
+        }
+
+        tbody.appendChild(row);
+      }
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+      document.body.appendChild(table);
+      expectedAnswers.push(columnSums.slice(1));
+    }
+
+    function createInputCell(columnIndex) {
+      return `<td><input type="number" data-column="${columnIndex}"></td>`;
+    }
+
+    function checkAnswers(expectedAnswers)  {
+      const inputCells = document.querySelectorAll('input[data-column]');
+      let correctAnswers = 0;
+
+      for (const inputCell of inputCells) {
+        const columnIndex = parseInt(inputCell.dataset.column);
+        const userAnswer = parseInt(inputCell.value);
+
+        if (!isNaN(userAnswer) && userAnswer === expectedAnswers[0][columnIndex]) {
+          inputCell.style.backgroundColor = 'green';
+          correctAnswers++;
+        } else {
+          inputCell.style.backgroundColor = 'red';
+        }
+      }
+
+      alert(`You answered ${correctAnswers} tasks correctly.`);
+    }
+  </script>
+
+
+  <script>
+    
+    const expectedAnswers = []; 
+    for (let i = 0; i < 5; i++) {
+      generateTable(i, expectedAnswers);
+    }
+    
+    let timer;
+    const totalSeconds = 10; 
+    let remainingSeconds = totalSeconds;
+    let isTimerRunning = false;
+    let isQuizStarted = false;
+    
+    function detectReload() {
+      if (isQuizStarted && performance.navigation.type === 1) {
+        alert('')
+        submitAnswers();
+      }
+    }
+
+    // Add an event listener to detect page reload after the "Start" button is clicked
+    window.addEventListener('load', detectReload);
+
+    function startTimer() {
+      if (isTimerRunning) return;
+
+      isTimerRunning = true;
+      timer = setInterval(updateTimer, 1000);
+      localStorage.setItem('isQuizStarted', true);
+    }
+    
+    function updateTimer() {
+      const minutes = Math.floor(remainingSeconds / 60);
+      const seconds = remainingSeconds % 60;
+      document.getElementById('timer').textContent = `Time: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+      if (remainingSeconds === 0) {
+        clearInterval(timer);
+        isTimerRunning = false;
+       
+        checkAnswers(expectedAnswers); // rezultati shfaqet
+      } else {
+        remainingSeconds--;
+      }
+    }
+    
+    
+
+    
+    
+    </script>
+  <div style="display: flex; justify-content: center; align-items: center;">
+    <button onclick="checkAnswers(expectedAnswers)">Submit</button>
+  </div>
+    </body>
+    </html>
+    
+
+
+
+  

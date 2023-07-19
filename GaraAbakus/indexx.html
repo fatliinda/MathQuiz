@@ -1,0 +1,103 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+  /* Metal by Etienne Martin. https://unsplash.com/photos/v6uiP2MD6vs */
+  --metal-tex: url(https://images.unsplash.com/photo-1501166222995-ff31c7e93cef?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NTcyMDc2NzU&ixlib=rb-1.2.1&q=80);
+  
+  background: black;
+  color: white;
+  font-family: system-ui, sans-serif;
+}
+
+a {
+  color: skyblue;
+  font-weight: bold;
+}
+
+.main {
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.metal {
+  position: relative;
+  margin: 15vh auto;
+  color: transparent;
+  font-family: impact, sans-serif;
+  font-size: 25vw;
+  letter-spacing: 0.05em;
+  background-image: var(--metal-tex);
+  background-size: cover;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.texture,
+.texture::after {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+  
+.texture {
+  background-image: linear-gradient(to bottom, blue, white 50%, red 65%, white);
+  background-attachment: fixed;
+  mix-blend-mode: color-dodge;
+}
+
+.texture::after {
+  content: '';
+  background-image: var(--metal-tex);
+  background-size: cover;
+  filter: saturate(0) brightness(0.8) contrast(4);
+  mix-blend-mode: multiply;
+}
+    </style>
+</head>
+<body>
+    
+
+<div class="main">
+    <p>Welcome to the Abacus Worldwide Competition</p>
+    <h1 style="
+    position: relative;
+    top: 9rem;
+">Worldwide</h1>
+    <h1 class="metal">
+      ABACUS <br>
+      </h1><h3 style="
+    position: relative;
+    top: -10rem;
+    font-size: 2rem;
+">Competition</h3>
+      <span class="texture"></span>   
+    <h1 style="
+    position: relative;
+    top: -10rem;
+    color: chartreuse;
+">First Place 50 Tasks</h1>
+    <h2 style="
+    position: relative;
+    top: -11rem;
+    color: green;
+">Second Place 49 Tasks</h2>
+    <h3 style="
+    position: relative;
+    top: -12rem;
+">Third Place 48 Tasks</h3>
+      <p style="
+      position: relative;
+      top: -9rem;
+  ">Chennai India 2023 <a target="_blank" href="competition.html">Join The Competition</a></p>
+    <!-- <p><a target="_blank" href="https://unsplash.com/photos/v6uiP2MD6vs">Metal image</a> by <a target="_blank" href="https://unsplash.com/@etiennemartin">Etienne Martin on unsplash</a></p> -->
+  </div>
+
+</body></html>
