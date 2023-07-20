@@ -23,6 +23,7 @@
       margin: 20px auto;
       background-color: #fff;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display:none;
     }
 
     th, td {
@@ -108,11 +109,20 @@
   
     <h1>Abacus Worldwide Competition</h1>
     <div class="Button">
-      <button onclick="startTimer()">Start</button>
+      <button onclick="start()">Start</button>
     </div>
     <p id="timer">Time: 5 Minutes</p>
   
     <script>
+        function start(){
+
+
+            startTimer();
+            const tables = document.getElementsByTagName('table');
+            for (let i = 0; i < tables.length; i++) {
+        tables[i].style.display = 'block';
+      }
+        }
         
         function getRandomNumber(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
